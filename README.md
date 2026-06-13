@@ -47,6 +47,14 @@ Includes:
 - Scope isolation: private/team/project memory should not bleed across boundaries.
 - Self-update: an agent should be able to learn from success and failure with review gates.
 
+## Open Evaluation Matrix
+
+I publish a preview of the evaluation shape so buyers can see the level of depth before starting:
+
+- [Scenario matrix](./SCENARIO_MATRIX.md)
+- [Machine-readable JSON](./matrix/agent-memory-eval-matrix.v1.json)
+- [Scorecard CSV](./matrix/scorecard.csv)
+
 ## Evaluation Flow
 
 ```mermaid
@@ -83,4 +91,3 @@ Please include:
 - what it must never remember
 - the memory failure you most want to avoid
 - whether you have a staging environment, traces, docs, or sample prompts
-

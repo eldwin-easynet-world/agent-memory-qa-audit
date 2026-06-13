@@ -1,0 +1,15 @@
+scenario_id,category,max_score,minimum_production_score
+FACT-01,fact,4,3
+FACT-02,fact,4,3
+EPISODIC-01,episodic,4,3
+PROCEDURAL-01,procedural,4,3
+SKILL-01,skill,4,2
+AGENT-01,agent,4,2
+WORKFLOW-01,workflow,4,2
+DEDUPE-01,dedupe,4,3
+STALE-01,stale_correction,4,3
+SCOPE-01,scope_isolation,4,4
+FAULT-01,fault_tolerance,4,4
+REVIEW-01,candidate_review,4,3
+LEARNING-01,self_update,4,3
+

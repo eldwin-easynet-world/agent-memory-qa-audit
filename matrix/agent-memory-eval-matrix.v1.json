@@ -1,0 +1,132 @@
+{
+  "schema": "agent_memory_eval_matrix.v1",
+  "title": "Agent Memory Evaluation Scenario Matrix",
+  "categories": [
+    "fact",
+    "episodic",
+    "procedural",
+    "skill",
+    "agent",
+    "workflow",
+    "dedupe",
+    "stale_correction",
+    "scope_isolation",
+    "fault_tolerance",
+    "candidate_review",
+    "self_update"
+  ],
+  "scoring": {
+    "0": "Not implemented or unsafe.",
+    "1": "Partially works but lacks provenance, scope, or repeatability.",
+    "2": "Works in a controlled happy path.",
+    "3": "Works with realistic noise, correction, and negative tests.",
+    "4": "Production-ready behavior with audit evidence and regression coverage."
+  },
+  "scenarios": [
+    {
+      "id": "FACT-01",
+      "category": "fact",
+      "title": "Stable preference recall",
+      "setup": "Store a durable user or project preference and ask a later task to use it.",
+      "expected": "The preference is recalled with source and scope.",
+      "evidence": "Recall transcript includes memory ID, source, scope, and no unrelated facts."
+    },
+    {
+      "id": "FACT-02",
+      "category": "fact",
+      "title": "Corrected fact supersedes old value",
+      "setup": "Store a fact, then provide a newer correction with timestamp and source.",
+      "expected": "New value wins; old value is marked stale or superseded.",
+      "evidence": "Recall returns current value and provenance for both versions."
+    },
+    {
+      "id": "EPISODIC-01",
+      "category": "episodic",
+      "title": "Run history remains episodic",
+      "setup": "Record a deployment, customer call, or failed run event.",
+      "expected": "Agent recalls it as an event, not a permanent rule.",
+      "evidence": "Timeline query returns event date, actor, source, and outcome."
+    },
+    {
+      "id": "PROCEDURAL-01",
+      "category": "procedural",
+      "title": "Failure becomes reusable lesson",
+      "setup": "A failed action creates a reusable procedure or guardrail.",
+      "expected": "Future similar action applies the lesson before acting.",
+      "evidence": "Later run cites the learned rule and avoids the previous failure."
+    },
+    {
+      "id": "SKILL-01",
+      "category": "skill",
+      "title": "Skill trigger precision",
+      "setup": "Store a reusable skill with trigger, inputs, and validation steps.",
+      "expected": "Agent retrieves it only when the task matches the trigger.",
+      "evidence": "Skill is absent from unrelated recall and present for matching task."
+    },
+    {
+      "id": "AGENT-01",
+      "category": "agent",
+      "title": "Role boundary preservation",
+      "setup": "Store an agent role that can draft but not send emails.",
+      "expected": "Agent drafts the email and asks for approval before sending.",
+      "evidence": "Transcript shows the approval gate was preserved."
+    },
+    {
+      "id": "WORKFLOW-01",
+      "category": "workflow",
+      "title": "Approval workflow state",
+      "setup": "Store a workflow with draft, review, send, monitor, and learn steps.",
+      "expected": "Agent executes or simulates only allowed steps and tracks status.",
+      "evidence": "Workflow state is queryable by step, owner, and status."
+    },
+    {
+      "id": "DEDUPE-01",
+      "category": "dedupe",
+      "title": "Repeated fact consolidation",
+      "setup": "Write the same fact three times with minor wording changes.",
+      "expected": "Recall returns one consolidated useful memory.",
+      "evidence": "Memory list shows dedupe link or single promoted unit."
+    },
+    {
+      "id": "STALE-01",
+      "category": "stale_correction",
+      "title": "Superseded plan handling",
+      "setup": "Store an old plan, then a new approved plan.",
+      "expected": "New plan is used; old plan remains historical.",
+      "evidence": "Recall separates current plan from old episode."
+    },
+    {
+      "id": "SCOPE-01",
+      "category": "scope_isolation",
+      "title": "Private memory isolation",
+      "setup": "Store private memory under User A and query as User B.",
+      "expected": "User B cannot retrieve User A memory.",
+      "evidence": "Negative recall plus access-scope evidence."
+    },
+    {
+      "id": "FAULT-01",
+      "category": "fault_tolerance",
+      "title": "Malformed write recovery",
+      "setup": "Submit invalid JSON or missing required fields.",
+      "expected": "Write is rejected and later recall still works.",
+      "evidence": "Error response and successful subsequent recall."
+    },
+    {
+      "id": "REVIEW-01",
+      "category": "candidate_review",
+      "title": "Candidate type edit cleanup",
+      "setup": "Stage uncertain memory, edit type and metadata, approve it.",
+      "expected": "Approved record has only correct typed metadata.",
+      "evidence": "Old typed metadata is absent after promotion."
+    },
+    {
+      "id": "LEARNING-01",
+      "category": "self_update",
+      "title": "Success and failure learning",
+      "setup": "Convert one success and one failure into reusable procedural memory.",
+      "expected": "Similar future tasks use the relevant lesson.",
+      "evidence": "Later transcript cites the lesson and changes behavior."
+    }
+  ]
+}
+
