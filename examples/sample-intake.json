@@ -1,0 +1,14 @@
+{
+  "stack": "LangGraph agent with Postgres checkpoints and a vector store",
+  "memoryGoal": "Remember customer preferences, product decisions, and reusable workflow lessons across support and implementation sessions.",
+  "forbiddenMemory": "Do not retain raw credentials, private customer secrets, payment details, or personal contact data beyond explicit support context.",
+  "primaryFailure": "The agent may recall stale customer requirements or leak private memory across workspaces.",
+  "package": "starter",
+  "availableMaterials": [
+    "Architecture diagram",
+    "Sample prompts",
+    "Staging API key with read-only test data",
+    "Recent failure transcript"
+  ]
+}
+

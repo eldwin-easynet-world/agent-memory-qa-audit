@@ -55,6 +55,21 @@ I publish a preview of the evaluation shape so buyers can see the level of depth
 - [Machine-readable JSON](./matrix/agent-memory-eval-matrix.v1.json)
 - [Scorecard CSV](./matrix/scorecard.csv)
 
+## Generate a Starter Plan
+
+You can generate a buyer-specific starter plan from a short intake JSON:
+
+```bash
+node tools/generate-audit-plan.mjs \
+  --input examples/sample-intake.json \
+  --output examples/generated-starter-plan.md
+```
+
+See:
+
+- [Sample intake JSON](./examples/sample-intake.json)
+- [Generated starter plan](./examples/generated-starter-plan.md)
+
 ## Evaluation Flow
 
 ```mermaid
