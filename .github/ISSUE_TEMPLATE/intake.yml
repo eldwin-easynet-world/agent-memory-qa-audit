@@ -1,0 +1,59 @@
+name: Memory QA Audit Intake
+description: Request a starter audit or deep memory evaluation.
+title: "Memory QA audit request: "
+labels: ["intake"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for your interest. Please avoid posting secrets, tokens, private customer data, or production credentials.
+  - type: input
+    id: stack
+    attributes:
+      label: Agent or RAG stack
+      description: LangChain, LangGraph, LlamaIndex, n8n, custom, or other.
+      placeholder: "LangGraph + Postgres + vector DB"
+    validations:
+      required: true
+  - type: textarea
+    id: memory_goal
+    attributes:
+      label: What should the system remember?
+      description: Include facts, events, procedures, user preferences, or workflow state.
+    validations:
+      required: true
+  - type: textarea
+    id: forbidden_memory
+    attributes:
+      label: What should it never remember?
+      description: Include sensitive data, regulated context, or boundaries you care about.
+    validations:
+      required: true
+  - type: textarea
+    id: failure
+    attributes:
+      label: Most costly memory failure
+      description: Stale recall, duplicate memory, cross-user leakage, hallucinated learning, bad write recovery, or another risk.
+    validations:
+      required: true
+  - type: dropdown
+    id: package
+    attributes:
+      label: Package
+      options:
+        - Starter Audit - USD 99
+        - Deep Agent Memory Evaluation - USD 499
+        - Not sure yet
+    validations:
+      required: true
+  - type: checkboxes
+    id: access
+    attributes:
+      label: Available materials
+      options:
+        - label: Architecture docs
+        - label: Sample prompts or user journeys
+        - label: Staging environment
+        - label: Logs or traces
+        - label: Existing evals or tests
+
