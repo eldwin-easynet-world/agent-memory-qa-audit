@@ -1,5 +1,7 @@
 # AI Agent Memory QA Audit
 
+[![Validate audit assets](https://github.com/eldwin-easynet-world/agent-memory-qa-audit/actions/workflows/validate-assets.yml/badge.svg)](https://github.com/eldwin-easynet-world/agent-memory-qa-audit/actions/workflows/validate-assets.yml)
+
 Practical reliability testing for AI agent memory, RAG personalization, and long-running workflow context.
 
 Most AI systems can retrieve something. Fewer can prove that the right memory is stored, updated, deduplicated, scoped, and recalled when the agent needs it later.
@@ -54,6 +56,7 @@ I publish a preview of the evaluation shape so buyers can see the level of depth
 - [Scenario matrix](./SCENARIO_MATRIX.md)
 - [Machine-readable JSON](./matrix/agent-memory-eval-matrix.v1.json)
 - [Scorecard CSV](./matrix/scorecard.csv)
+- [Sample report](./SAMPLE_REPORT.md)
 
 ## Generate a Starter Plan
 

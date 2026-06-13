@@ -1,0 +1,80 @@
+name: Validate audit assets
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Validate matrix and generator
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs = require("node:fs");
+          const matrix = JSON.parse(fs.readFileSync("matrix/agent-memory-eval-matrix.v1.json", "utf8"));
+          const intake = JSON.parse(fs.readFileSync("examples/sample-intake.json", "utf8"));
+          if (matrix.schema !== "agent_memory_eval_matrix.v1") {
+            throw new Error(`Unexpected schema: ${matrix.schema}`);
+          }
+          if (!Array.isArray(matrix.scenarios) || matrix.scenarios.length < 12) {
+            throw new Error("Expected at least 12 scenarios");
+          }
+          const ids = new Set(matrix.scenarios.map((scenario) => scenario.id));
+          if (ids.size !== matrix.scenarios.length) {
+            throw new Error("Scenario IDs must be unique");
+          }
+          if (intake.package !== "starter") {
+            throw new Error("Sample intake should exercise the starter package");
+          }
+          NODE
+          node tools/generate-audit-plan.mjs \
+            --input examples/sample-intake.json \
+            --output /tmp/generated-starter-plan.md
+          diff -u examples/generated-starter-plan.md /tmp/generated-starter-plan.md
+
+      - name: Validate scorecard coverage
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import csv
+          import json
+          from pathlib import Path
+
+          matrix = json.loads(Path("matrix/agent-memory-eval-matrix.v1.json").read_text())
+          rows = list(csv.DictReader(Path("matrix/scorecard.csv").open()))
+          scenario_ids = {scenario["id"] for scenario in matrix["scenarios"]}
+          row_ids = {row["scenario_id"] for row in rows}
+          if scenario_ids != row_ids:
+              raise SystemExit(f"Scorecard mismatch: {scenario_ids ^ row_ids}")
+          for row in rows:
+              max_score = int(row["max_score"])
+              minimum_score = int(row["minimum_production_score"])
+              if max_score != 4:
+                  raise SystemExit(f"Unexpected max score in {row}")
+              if minimum_score < 0 or minimum_score > max_score:
+                  raise SystemExit(f"Invalid minimum score in {row}")
+          print(f"validated_scenarios={len(rows)}")
+          PY
+
+      - name: Validate page links
+        run: |
+          set -euo pipefail
+          grep -q "SCENARIO_MATRIX.md" README.md
+          grep -q "SAMPLE_REPORT.md" README.md
+          grep -q "generated-starter-plan.md" README.md
+          grep -q "SCENARIO_MATRIX.md" index.html
+          grep -q "SAMPLE_REPORT.md" index.html
+          grep -q "generated-starter-plan.md" index.html
+          grep -q "generate-audit-plan.mjs" index.html
